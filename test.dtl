@@ -1,0 +1,10 @@
+join test_char (Neutral) rightmost [animation="Fade In"]
+test_char (Neutral): Huh, is this working?
+test_char: You should be seeing and be able to interact with your desktop.
+test_char: Can you?
+- Yes.
+	test_char (Happy): Yay!
+- Nah.
+	test_char: \:(
+test_char (Neutral): Anyways this is the end of the very early prototype
+test_char: I just wanted to see if this shit even works man.
