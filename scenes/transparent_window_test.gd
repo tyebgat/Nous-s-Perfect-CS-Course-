@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 
 # Called when the node enters the scene tree for the first time.
@@ -23,31 +23,29 @@ func _setup_window() -> void:
 # CLICK THROUGH WINDOW
 #==================================
 func _set_click_through(enabled: bool) -> void:
-	#windows script
-	var script := """
-	Add-Type @"
-	using System;
-	using System.Diagnostics;
-	using System.Runtime.InteropServices;
-	public class WinUtil {
-		[DllImport("user32.dll")]
-		public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-		[DllImport("user32.dll")]
-		public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-	}
-"@
-	$proc  = Get-Process -Id %d
-	$hwnd  = $proc.MainWindowHandle
-	$cur   = [WinUtil]::GetWindowLong($hwnd, -20)
-	$cur   = $cur -bor 0x80020
-	[WinUtil]::SetWindowLong($hwnd, -20, $cur)
-	""" % OS.get_process_id()
+	var flag_line: String
 	if enabled:
-		script += "$cur = $cur -bor 0x80020 \n"  # WS_EX_LAYERED | WS_EX_TRANSPARENT
-	
+		flag_line = "$cur = $cur -bor 0x80020"
 	else:
-		script += "$cur = $cur -band (-bnot 0x20) \n"  # remove WS_EX_TRANSPARENT only
+		flag_line = "$cur = $cur -band (-bnot 0x20)"
 
-	script += "[WinUtil]::SetWindowLong($hwnd, -20, $cur)"
-	
+	var script := """
+Add-Type @"
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+public class WinUtil {
+    [DllImport("user32.dll")]
+    public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+    [DllImport("user32.dll")]
+    public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+}
+"@
+$proc = Get-Process -Id %d
+$hwnd = $proc.MainWindowHandle
+$cur  = [WinUtil]::GetWindowLong($hwnd, -20)
+%s
+[WinUtil]::SetWindowLong($hwnd, -20, $cur)
+""" % [OS.get_process_id(), flag_line]
+
 	OS.execute("powershell", ["-NoProfile", "-WindowStyle", "Hidden", "-Command", script])
