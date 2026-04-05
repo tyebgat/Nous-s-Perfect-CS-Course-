@@ -19,6 +19,9 @@ scene = ExtResource("1_xnstu")
 [sub_resource type="Resource" id="Resource_j8xcn"]
 script = ExtResource("2_we6bx")
 scene = ExtResource("3_g5vj2")
+overrides = {
+"disabled": "true"
+}
 
 [sub_resource type="Resource" id="Resource_xfs6i"]
 script = ExtResource("2_we6bx")
@@ -68,4 +71,4 @@ layer_info = {
 "16": SubResource("Resource_62gx1"),
 "17": SubResource("Resource_0kd6x")
 }
-metadata/_latest_layer = "13"
+metadata/_latest_layer = "10"
