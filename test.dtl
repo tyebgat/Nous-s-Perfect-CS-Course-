@@ -1,4 +1,4 @@
-join test_char (Neutral) rightmost [animation="Fade In"]
+join test_char (Neutral) rightmost [animation="Instant In" length="0.0"]
 test_char (Neutral): Huh, is this working?
 test_char: You should be seeing and be able to interact with your desktop.
 test_char: Can you?
