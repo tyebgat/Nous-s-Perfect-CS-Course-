@@ -1,10 +1,9 @@
 [gd_scene format=3 uid="uid://dtevyah7o7m8u"]
 
 [ext_resource type="Script" uid="uid://bcapjnyh5fcou" path="res://scenes/transparent_window_test.gd" id="1_k5s3k"]
-[ext_resource type="Script" uid="uid://77mmlg2x73u" path="res://scenes/start_timeline.gd" id="2_5f1je"]
 
 [node name="TransparentWindow" type="Node2D" unique_id=145347431]
 script = ExtResource("1_k5s3k")
 
 [node name="StartTimeline" type="Node2D" parent="." unique_id=1456316328]
-script = ExtResource("2_5f1je")
+visible = false

@@ -3,18 +3,13 @@ extends Node
 
 func _ready() -> void:
 	_setup_window()
-	# After _setup_window is called, nuke any default theme background
-	get_window().set("theme_override_styles/panel", null)
-	#dialogic signals
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().process_frame
 	Dialogic.timeline_started.connect(_on_timeline_started)
 	Dialogic.timeline_ended.connect(_on_timeline_ended)
-	#wait frames so dialogic can build the UI
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await get_tree().process_frame
-	_update_passthrough()
-	
+	Dialogic.start('test')
 	_debug_print_controls(get_tree().root)
 
 #Set up window configurations
@@ -24,6 +19,20 @@ func _setup_window() -> void:
 	win.always_on_top = true
 	win.size = DisplayServer.screen_get_size()
 	win.position = Vector2i.ZERO
+
+func _process(_delta: float) -> void:
+	var dialogic_layer := _find_node_by_name(get_tree().root, "DialogicNode_Layout")
+	if dialogic_layer:
+		print("Layout visible: ", dialogic_layer.visible, " | modulate: ", dialogic_layer.modulate)
+
+func _find_node_by_name(node: Node, target: String) -> Node:
+	if node.name == target:
+		return node
+	for child in node.get_children():
+		var result := _find_node_by_name(child, target)
+		if result:
+			return result
+	return null
 
 func _on_timeline_started() -> void:
 	#wait frames so dialogic can build the UI

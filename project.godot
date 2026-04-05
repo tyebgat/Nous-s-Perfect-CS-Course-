@@ -74,8 +74,6 @@ audio/channel_defaults={
 window/size/mode=3
 window/size/borderless=true
 window/size/always_on_top=true
-window/size/transparent=true
-window/per_pixel_transparency/allowed=true
 
 [editor_plugins]
 
@@ -96,7 +94,3 @@ dialogic_default_action={
 [physics]
 
 3d/physics_engine="Jolt Physics"
-
-[rendering]
-
-viewport/transparent_background=true
