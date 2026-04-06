@@ -9,6 +9,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	_window_manager = $ClickThrough
+	_window_manager.call("SetAlwaysOnTop", true)
 	Dialogic.timeline_started.connect(_on_timeline_started)
 	Dialogic.timeline_ended.connect(_on_timeline_ended)
 	Dialogic.start('test')

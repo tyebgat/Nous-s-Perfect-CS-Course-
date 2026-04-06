@@ -5,49 +5,26 @@ using System.Runtime.InteropServices;
 public partial class ClickThrough : Node
 {
 	[DllImport("user32.dll")]
-	private static extern IntPtr GetActiveWindow();
+	extern static IntPtr GetActiveWindow();
 
 	[DllImport("user32.dll")]
-	private static extern int SetWindowLong(IntPtr hwnd, int nIndex, int dwNewLong);
+	extern static int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
 
 	[DllImport("user32.dll")]
-	private static extern int GetWindowLong(IntPtr hwnd, int nIndex);
+	extern static int SetLayeredWindowAttributes(IntPtr hWnd, uint crKey, byte bAlpha, uint dwflags);
 
-	[DllImport("user32.dll")]
-	private static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+	static readonly IntPtr hWnd = GetActiveWindow();
 
-	private const int GWL_EXSTYLE = -20;
-	private const int WS_EX_LAYERED = 0x80000;
-	private const int WS_EX_TRANSPARENT = 0x20;
-	private const uint LWA_ALPHA = 0x2;
-	private const uint LWA_COLORKEY = 0x1;
+	const int GWL_EX_STYLE = -20;
+	const uint WS_EX_LAYERED = 0x00080000;
 
-	private IntPtr _hwnd;
+	// const uint LWA_ALPHA = 0x00000002;
+	const uint LWA_COLORKEY = 0x00000001;
 
-	public override void _Ready()
+	public void SetAlwaysOnTop(bool value)
 	{
-		_hwnd = GetActiveWindow();
-		GD.Print("HWND: ", _hwnd);
-		SetClickThroughByColorKey();
-	}
-
-	public void SetClickThroughByColorKey()
-	{
-		DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.AlwaysOnTop, true);
-		int exStyle = GetWindowLong(_hwnd, GWL_EXSTYLE);
-		SetWindowLong(_hwnd, GWL_EXSTYLE, exStyle | WS_EX_LAYERED);
-		SetLayeredWindowAttributes(_hwnd, 0, 0, LWA_COLORKEY);
-	}
-
-	public void EnableClickThrough()
-	{
-		int exStyle = GetWindowLong(_hwnd, GWL_EXSTYLE);
-		SetWindowLong(_hwnd, GWL_EXSTYLE, exStyle | WS_EX_LAYERED | WS_EX_TRANSPARENT);
-	}
-
-	public void DisableClickThrough()
-	{
-		int exStyle = GetWindowLong(_hwnd, GWL_EXSTYLE);
-		SetWindowLong(_hwnd, GWL_EXSTYLE, exStyle & ~WS_EX_TRANSPARENT);
+    	DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.AlwaysOnTop, value);
+    	SetWindowLong(hWnd, GWL_EX_STYLE, WS_EX_LAYERED);
+    	SetLayeredWindowAttributes(hWnd, 0, 0, LWA_COLORKEY);
 	}
 }
