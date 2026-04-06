@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://dtevyah7o7m8u"]
 
 [ext_resource type="Script" uid="uid://bcapjnyh5fcou" path="res://scenes/transparent_window_test.gd" id="1_k5s3k"]
+[ext_resource type="Script" uid="uid://b5m3ydnmq171v" path="res://scenes/ClickThrough.cs" id="2_5f1je"]
 
 [node name="TransparentWindow" type="Node2D" unique_id=145347431]
 script = ExtResource("1_k5s3k")
 
-[node name="StartTimeline" type="Node2D" parent="." unique_id=1456316328]
-visible = false
+[node name="ClickThrough" type="Node" parent="." unique_id=1748211037]
+script = ExtResource("2_5f1je")
