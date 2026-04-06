@@ -28,6 +28,15 @@ public partial class ClickThrough : Node
 	{
 		_hwnd = GetActiveWindow();
 		GD.Print("HWND: ", _hwnd);
+		SetClickThroughByColorKey();
+	}
+
+	public void SetClickThroughByColorKey()
+	{
+		DisplayServer.WindowSetFlag(DisplayServer.WindowFlags.AlwaysOnTop, true);
+		int exStyle = GetWindowLong(_hwnd, GWL_EXSTYLE);
+		SetWindowLong(_hwnd, GWL_EXSTYLE, exStyle | WS_EX_LAYERED);
+		SetLayeredWindowAttributes(_hwnd, 0, 0, LWA_COLORKEY);
 	}
 
 	public void EnableClickThrough()
@@ -40,12 +49,5 @@ public partial class ClickThrough : Node
 	{
 		int exStyle = GetWindowLong(_hwnd, GWL_EXSTYLE);
 		SetWindowLong(_hwnd, GWL_EXSTYLE, exStyle & ~WS_EX_TRANSPARENT);
-	}
-
-	public void SetClickThroughByAlpha()
-	{
-		int exStyle = GetWindowLong(_hwnd, GWL_EXSTYLE);
-		SetWindowLong(_hwnd, GWL_EXSTYLE, exStyle | WS_EX_LAYERED);
-		SetLayeredWindowAttributes(_hwnd, 0, 255, LWA_ALPHA);
 	}
 }
